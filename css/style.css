@@ -3,15 +3,17 @@
   src: url("../fonts/Lora-VariableFont_wght.ttf");
 }
 
-body {
-  font-family: lora, sans-serif;
-  max-width: 38rem;
-  padding: 2rem;
+html {
+  max-width: 70ch;
+  padding: 3em 1em;
   margin: auto;
-  font-size: larger;
+  line-height: 1.75;
+  font-size: 1.25em;
+  font-family: lora, sans-serif;
 }
 
 pre {
   -moz-tab-size: 2;
   tab-size: 2;
+  line-height: 1.25;
 }
