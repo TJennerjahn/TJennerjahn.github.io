@@ -1,0 +1,142 @@
+<html>
+
+<head>
+	<title>How this Blog works</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="./../css/style.css" type="text/css" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css">
+</head>
+
+<body>
+	<hr>
+<ul>
+<li><code>Creation</code>: 2022-10-08</li>
+</ul>
+<hr>
+<h1>How this Blog works</h1>
+<p>This Blog doesn't use any Frameworks or Plugins, or Javascript of any kind.
+There's very little css and the whole thing should fit in just a couple of kilobytes.</p>
+<p>Hopefully that results in speedy page loading and great performance regardless of the device used to read it.</p>
+<p>However as I'm not interested in manually writing HTML documents and upload them via FTP to a webserver as in ye olden times I decided to write a couple lines of code to fully automate the process and integrate it with my general notetaking workflow.</p>
+<p>This post is intended as a guide to everyone who wants to do the same (or is simply interested in the inner workings of this blog), as well as serve as documentation for my future self, so that I can look it up when I inevitably forget what I did.</p>
+<h2>Writing</h2>
+<p>HTML is a very fine markup language. But it doesn't offer a super great writing experience for long format text.
+Great for building websites, not so great for formatting text manually.</p>
+<p>Instead I write all my Notes in markdown. That's not a new idea, many people have adopted markdown as their note taking format of choice. And not without reason. Markdown is very easy to write and read, offers great out of the box formatting and there's a great eco-system of plugins around it that can extend its functionality to include support for charts, graphs, mathematic typesetting and many other things.
+As an added bonus it's a raw text format, and so it will forever remain readable even if we were to somehow lose access to all markdown parsers.</p>
+<p>I use NeoVim to edit all my files and I've set it up to offer a very comfortable writing experience with spellchecking, note linkinglive preview and many other creature comforts. However that's a topic for another day. Any Editor will work for this.</p>
+<h2>Publishing</h2>
+<p>Once I'm ready to release my ramblings into the internet I need to somehow convert my meticulously written markdown file into html and link it on the front page of my Blog.</p>
+<p>I've written a small js script that does this for me.
+Luckily I didn't need to write my own markdown parser <a href="https://itnext.io/creating-your-own-markdown-parser-from-scratch-in-swift-a8fa6f185bc8">(Although people have done this)</a>, but can instead use the excellent <a href="https://github.com/markdown-it/markdown-it">markdown-it</a>.</p>
+<p>This does all the heavy lifting for me. I just need to read the markdown file, pass it to markdown-it and out comes a perfectly formatted html string.</p>
+<p>There are a few more things left to be done, as this does not contain any header information (like a title), nor any styling.
+So I've written a small html template that looks like this:</p>
+<pre><code class="hljs language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>${0}<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./../css/style.css&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;preconnect&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://fonts.googleapis.com&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;preconnect&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://fonts.gstatic.com&quot;</span> <span class="hljs-attr">crossorigin</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+	${1}
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<p>This imports the Montserrat font that are pleasing your visual cortex right now, as well as some css used for syntax highlighting.
+I intend on only importing syntax highlighting functionality on pages that actually make use of it, but for now it's included by default.</p>
+<p>The custom stylesheet responsible for all other formatting is very simple and looks like this:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-string">&quot;Montserrat&quot;</span>, sans-serif;
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">38rem</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">2rem</span>;
+  <span class="hljs-attribute">margin</span>: auto;
+}
+</code></pre>
+<p>That's it. It's basically an exact copy of <a href="https://gist.github.com/JoeyBurzynski/617fb6201335779f8424ad9528b72c41">this</a> and it works incredibly well.</p>
+<p>The script then simply reads the template and regex replaces <code>${1}</code> with the output from markdown-it. The title is supplied as a command line argument.</p>
+<p>All in all the complete script looks like this:</p>
+<pre><code class="hljs language-Javascript"><span class="hljs-meta">#!/usr/bin/env node</span>
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);
+<span class="hljs-keyword">const</span> hljs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;highlight.js&quot;</span>);
+<span class="hljs-keyword">const</span> { exit } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;process&quot;</span>);
+<span class="hljs-keyword">const</span> yargs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;yargs&quot;</span>);
+<span class="hljs-keyword">const</span> md = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;markdown-it&quot;</span>)().<span class="hljs-title function_">use</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;markdown-it-highlightjs&quot;</span>), {
+  <span class="hljs-attr">highlight</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">str, lang</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(lang);
+    <span class="hljs-keyword">if</span> (lang &amp;&amp; hljs.<span class="hljs-title function_">getLanguage</span>(lang)) {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">return</span> (
+          <span class="hljs-string">&#x27;&lt;pre class=&quot;hljs&quot;&gt;&lt;code&gt;&#x27;</span> +
+          hljs.<span class="hljs-title function_">highlight</span>(str, { <span class="hljs-attr">language</span>: lang, <span class="hljs-attr">ignoreIllegals</span>: <span class="hljs-literal">true</span> }).<span class="hljs-property">value</span> +
+          <span class="hljs-string">&quot;&lt;/code&gt;&lt;/pre&gt;&quot;</span>
+        );
+      } <span class="hljs-keyword">catch</span> (__) {}
+    }
+
+    <span class="hljs-keyword">return</span> (
+      <span class="hljs-string">&#x27;&lt;pre class=&quot;hljs&quot;&gt;&lt;code&gt;&#x27;</span> + md.<span class="hljs-property">utils</span>.escapeHtml(str) + <span class="hljs-string">&quot;&lt;/code&gt;&lt;/pre&gt;&quot;</span>
+    );
+  },
+});
+
+<span class="hljs-keyword">const</span> argv = <span class="hljs-title function_">yargs</span>(process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>)).<span class="hljs-property">argv</span>;
+
+<span class="hljs-keyword">if</span> (!argv.<span class="hljs-property">i</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;No input file provided&quot;</span>);
+  <span class="hljs-title function_">exit</span>();
+}
+<span class="hljs-keyword">if</span> (!argv.<span class="hljs-property">o</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;No output folder provided&quot;</span>);
+  <span class="hljs-title function_">exit</span>();
+}
+<span class="hljs-keyword">if</span> (!argv.<span class="hljs-property">t</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;No title provided&quot;</span>);
+  <span class="hljs-title function_">exit</span>();
+}
+
+<span class="hljs-keyword">var</span> template = fs
+  .<span class="hljs-title function_">readFileSync</span>(
+    <span class="hljs-string">&quot;/Users/tjennerjahn/Programming/Projects/NoteToPost/template.html&quot;</span>
+  )
+  .<span class="hljs-title function_">toString</span>();
+
+<span class="hljs-keyword">var</span> note = fs.<span class="hljs-title function_">readFileSync</span>(argv.<span class="hljs-property">i</span>).<span class="hljs-title function_">toString</span>();
+<span class="hljs-keyword">var</span> body = md.<span class="hljs-title function_">render</span>(note);
+template = template.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;${0}&quot;</span>, argv.<span class="hljs-property">t</span>);
+template = template.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;${1}&quot;</span>, body);
+fs.<span class="hljs-title function_">writeFileSync</span>(<span class="hljs-string">`<span class="hljs-subst">${argv.o}</span><span class="hljs-subst">${argv.t.replaceAll(<span class="hljs-string">&quot; &quot;</span>, <span class="hljs-string">&quot;_&quot;</span>)}</span>.html`</span>, template);
+</code></pre>
+<p>I've hardcoded the filepath of the template because this only needs to work for me and isn't intended as a general purpose tool, but I'm pretty sure that I'll change that once I move the project once and have to figure out why everything stopped working.</p>
+<p>Something to note is the first line:</p>
+<pre><code class="hljs language-Javascript"><span class="hljs-meta">#!/usr/bin/env node</span>
+</code></pre>
+<p>This provides an environment for your terminal so that the file can be executed directly. No need to run <code>node somefile.js</code>.
+To make it globally accessible, I add this to my <code>package.json</code>:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+	<span class="hljs-attr">&quot;bin&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+		<span class="hljs-attr">&quot;notetopost&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./index.js&quot;</span>
+	<span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Afterwards I run <code>npm link</code> inside the project folder and Voilà! <code>notetopost</code> is a globally accessible command that I can run in my terminal from anywhere.</p>
+<p>I've created a macro in vim that automatically runs this on the current buffer, I only need to fill in a title and the rest happens on its own.</p>
+<h2>Hosting</h2>
+<p>After running the script, the generated .html file sits inside the essays directory that's part of a git repo that I use to manage this blog.
+I manually add the entry to the front page and push a new commit.</p>
+<p>Github does the rest for me. This Blog is hosted on GitHub Pages and the site gets updated automatically when I push to the repository.</p>
+<p>I have no problem relying on them to host this site, since switching to something else would be incredibly easy. If they ever shut down Github Pages I can simply point to another service, or even host an apache or nginx server. Since all of this is just html and css without any integrations into some specific service there's nothing that would make a switch difficult.</p>
+<p>So until that happens I can enjoy their free website hosting that does everything for me.</p>
+
+</body>
+
+</html>

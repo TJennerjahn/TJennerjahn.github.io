@@ -1,6 +1,11 @@
 body {
-  font-family: "Montserrat";
+  font-family: "Montserrat", sans-serif;
   max-width: 38rem;
   padding: 2rem;
   margin: auto;
+}
+
+pre {
+  -moz-tab-size: 2;
+  tab-size: 2;
 }
