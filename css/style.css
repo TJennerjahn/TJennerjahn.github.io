@@ -17,3 +17,17 @@ pre {
   tab-size: 2;
   line-height: 1.25;
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    /* background-color: #38454a; */
+    background-color: #2c2a37;
+    color: #f4eef2;
+  }
+  a {
+    color: #bfaeb9;
+  }
+  a:hover {
+    color: #f4eef2;
+  }
+}
