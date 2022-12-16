@@ -1,0 +1,71 @@
+<html>
+
+<head>
+	<title>Adding Wifi you your printer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="./../css/style.css" type="text/css" rel="stylesheet">
+	<link href="./../css/syntax.min.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+	<hr>
+<ul>
+<li><code>Creation</code>: 2022-12-15</li>
+</ul>
+<hr>
+<h1>Adding Wifi to any printer</h1>
+<p>I own a Brother HL-L2310D Black and White Laser Printer.
+It prints great the toner is cheap and I've never had a problem with it.</p>
+<p>But it doesn't have wifi.
+And so everytime I want to print something I have to walk over to my printer, connect my laptop to it with a wire
+and wait around until its finished.</p>
+<p>That's unacceptable.</p>
+<p>Instead of replacing an otherwise great printer I'm just going to add wifi capabilities to it, by turning a spare raspberry pi zero into a print server.</p>
+<p>There are many guides on the internet explaining how to do this, but I want to write down exactly what I did, just in case something breaks a few years down the line and I don't remember what I did to get it working in the first place.</p>
+<p>I'll try to be brief in case you want to follow along as well as to spare myself boring prose when I dig this up in the future.</p>
+<h2>Headleass Install of Raspberry Pi OS</h2>
+<p>Raspberry provides the Raspberry Pi Image for easy installation of the os onto a micro-sd card.
+Download and install it. Select other, then Raspberry Pi OS Lite 32 bit. Don't use the standard os, it contains all kind of stuff that we don't need.</p>
+<p>Click on the little cog, enable ssh and fill in you wifi settings. Click save and then write it to your micro-sd card.
+Once done, put your card back into the pi, and connect it to power, as well as your printer via usb.</p>
+<p>If your Pi has trouble detecting the printer later on, try using a usb otg adapter.</p>
+<p>If you have a 3d printer, now would be a great time to print a case.
+I used this one: <a href="https://www.thingiverse.com/thing:4770769">https://www.thingiverse.com/thing:4770769</a>
+(If you don't have a 3D printer, consider getting one, it's a very useful tool to own and nobody is forcing you to print useless figurines unlike the internet might make you believe.)</p>
+<h2>Installing CUPS</h2>
+<p>After you gave the pi some time to boot up find its IP in your router settings (Mine was <code>192.168.178.68</code>). While you're at it give it a static IP.
+If you don't you might need to remove and re-add it to your print settings everytime you want to print something.
+Don't ask me how I know this.</p>
+<p>SSH into your pi.</p>
+<p>Update the system with the following commands:</p>
+<pre><code class="hljs language-bash">sudo apt update
+sudo apt upgrade
+</code></pre>
+<p>Don't worry if this takes a while, the raspberry pi zero is sloooooow.</p>
+<p>Install CUPS:</p>
+<pre><code class="hljs language-bash">sudo apt install cups
+</code></pre>
+<p>CUPS creates the new usergroup <code>lpadmin</code>. Add your user to this group, otherwise you won't be allowed to print.</p>
+<pre><code class="hljs language-bash">sudo usermod -a -G lpadmin pi
+</code></pre>
+<p>Enable CUPS to be accessible over your network:</p>
+<pre><code class="hljs">sudo cupsctl <span class="hljs-comment">--remote-any</span>
+</code></pre>
+<p>Check if you can reach the CUPS server from your browser. The default CUPS port is <code>631</code></p>
+<p>If you have a brother laserprinter, install the brlaser package:</p>
+<pre><code class="hljs language-bash">sudo apt install printer-driver-brlaser
+</code></pre>
+<h2>Configuring CUPS</h2>
+<p>On the CUPS configuration page, go to Administration -&gt; Add Printer
+CUPS will ask you to switch to https. Log in with your ssh credentials (This is why we added the user to the lpadmin group).</p>
+<p>If you had your printer connected and powered on it should just show up in the local printers section.
+Select it, change its name and description if you want to and check the &quot;Share This Printer&quot; option.</p>
+<p>Now just select Make and Model, set some default settings and you're done.</p>
+<p>There's a dropdown menu that says Maintenance, it will also contain an option to print a test page.
+If evertying went well you should be able to print a page.
+Your printer will now also be availabe via wifi to every other device in you network.</p>
+
+</body>
+
+</html>
