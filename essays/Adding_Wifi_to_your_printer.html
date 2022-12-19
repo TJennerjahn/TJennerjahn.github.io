@@ -1,7 +1,7 @@
 <html>
 
 <head>
-	<title>Adding Wifi you your printer</title>
+	<title>Adding Wifi to your printer</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="./../css/style.css" type="text/css" rel="stylesheet">
@@ -56,6 +56,10 @@ sudo apt upgrade
 <p>If you have a brother laserprinter, install the brlaser package:</p>
 <pre><code class="hljs language-bash">sudo apt install printer-driver-brlaser
 </code></pre>
+<p>Edit: If you're having trouble installing with paper formats (like A4) than a different driver might be worth a look. This one (<a href="https://download.brother.com/welcome/dlf103532/hll2310dpdrv-4.0.0-1.i386.deb">https://download.brother.com/welcome/dlf103532/hll2310dpdrv-4.0.0-1.i386.deb</a>) is available directly from Brother and can be installed via:</p>
+<pre><code class="hljs language-bash">sudo dpkg --force-architecture -i dlf103532/hll2310dpdrv-4.0.0-1.i386.deb
+</code></pre>
+<p><code>force-architecture</code> is needed because the package isn't meant for arm devices (like the raspberry pi zero), but it just unpacks the ppd file, so it'll work just fine.</p>
 <h2>Configuring CUPS</h2>
 <p>On the CUPS configuration page, go to Administration -&gt; Add Printer
 CUPS will ask you to switch to https. Log in with your ssh credentials (This is why we added the user to the lpadmin group).</p>
